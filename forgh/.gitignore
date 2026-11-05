@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.log
+/__pycache__/
+*.py[cod]
+/private/
+/results/
+/public/pdal-comparison.json
+/run_pdal_comparison.py

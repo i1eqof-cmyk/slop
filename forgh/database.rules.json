@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "candidateReviews": {
+      ".read": true,
+      ".write": "auth != null && auth.uid === '6yr5pHdQccbW9551O853mpiax8O2'",
+      "$candidateId": {
+        ".validate": "newData.hasChildren(['id', 'latitude', 'longitude', 'bbox', 'score', 'confidence', 'category', 'pointCount', 'dimensions', 'evidence', 'removed', 'updatedAt']) && newData.child('id').val() === $candidateId && newData.child('latitude').isNumber() && newData.child('latitude').val() >= -90 && newData.child('latitude').val() <= 90 && newData.child('longitude').isNumber() && newData.child('longitude').val() >= -180 && newData.child('longitude').val() <= 180 && newData.child('score').isNumber() && newData.child('score').val() >= 0 && newData.child('score').val() <= 100 && newData.child('pointCount').isNumber() && newData.child('category').isString() && newData.child('confidence').isString() && newData.child('bbox').hasChildren(['west', 'south', 'east', 'north']) && newData.child('dimensions').hasChildren(['widthMeters', 'lengthMeters']) && newData.child('removed').isBoolean() && newData.child('updatedAt').isNumber()"
+      }
+    },
+    "scanCandidates": {
+      ".read": true,
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid",
+        "$candidateId": {
+          ".validate": "newData.hasChildren(['id', 'latitude', 'longitude', 'bbox', 'score', 'confidence', 'category', 'pointCount', 'dimensions', 'evidence', 'removed', 'updatedAt']) && newData.child('id').val() === $candidateId && newData.child('latitude').isNumber() && newData.child('latitude').val() >= -90 && newData.child('latitude').val() <= 90 && newData.child('longitude').isNumber() && newData.child('longitude').val() >= -180 && newData.child('longitude').val() <= 180 && newData.child('score').isNumber() && newData.child('score').val() >= 0 && newData.child('score').val() <= 100 && newData.child('pointCount').isNumber() && newData.child('category').isString() && newData.child('confidence').isString() && newData.child('bbox').hasChildren(['west', 'south', 'east', 'north']) && newData.child('dimensions').hasChildren(['widthMeters', 'lengthMeters']) && newData.child('removed').isBoolean() && newData.child('updatedAt').isNumber()"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A local browser performance benchmark using real USGS EPT LiDAR."
+    />
+    <title>Advanced EPT Browser Benchmark</title>
+  </head>
+  <body>
+    <main class="shell">
+      <header class="masthead">
+        <p class="eyebrow">GLOBAL EPT · BROWSER BENCHMARK</p>
+        <h1>How much LiDAR can a browser handle?</h1>
+        <p class="lede">
+          Benchmark any public EPT point cloud with browser-side retrieval, LAZ
+          decompression and WebGL rendering. No default dataset or location is
+          built into this project.
+        </p>
+      </header>
+
+      <section class="source-panel" aria-labelledby="source-title">
+        <div>
+          <p class="eyebrow">DATASET SETUP</p>
+          <h2 id="source-title">Choose a public EPT dataset and test center</h2>
+          <p>
+            Enter projected X/Y coordinates in a meter-based horizontal CRS.
+            The app does not save these values or include them in downloaded
+            reports. The selected EPT host receives requests and may log them.
+          </p>
+        </div>
+        <div class="source-count">
+          <span id="dataset-points">Not checked</span>
+          <small>source points after metadata is loaded</small>
+        </div>
+        <div class="source-inputs">
+          <label for="ept-url">EPT metadata URL</label>
+          <input id="ept-url" type="url" autocomplete="url" placeholder="https://example.org/ept.json" required />
+          <label for="center-x">Test center X</label>
+          <input id="center-x" type="number" step="any" inputmode="decimal" placeholder="Projected X coordinate" required />
+          <label for="center-y">Test center Y</label>
+          <input id="center-y" type="number" step="any" inputmode="decimal" placeholder="Projected Y coordinate" required />
+        </div>
+      </section>
+
+      <section class="test-panel" aria-labelledby="test-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">TEST AREAS</p>
+            <h2 id="test-title">Increasing footprint around your center</h2>
+          </div>
+        </div>
+
+        <div class="area-grid" aria-label="Benchmark areas">
+          <article class="area-card">
+            <span class="area-size">100 × 100 m</span>
+            <span class="area-status" data-area="100">Not run</span>
+          </article>
+          <article class="area-card">
+            <span class="area-size">250 × 250 m</span>
+            <span class="area-status" data-area="250">Not run</span>
+          </article>
+          <article class="area-card">
+            <span class="area-size">500 × 500 m</span>
+            <span class="area-status" data-area="500">Not run</span>
+          </article>
+        </div>
+
+        <div class="controls">
+          <label for="quality-mode">Display quality</label>
+          <select id="quality-mode">
+            <option value="adaptive">Adaptive (device-aware)</option>
+            <option value="economy">Economy · 100k points</option>
+            <option value="balanced">Balanced · 500k points</option>
+            <option value="high">High · 2M points</option>
+          </select>
+          <button id="run-all" class="primary-button">Run all three tests</button>
+          <button id="cancel" class="quiet-button" disabled>Cancel</button>
+          <span id="quality-explanation" class="quality-note"></span>
+        </div>
+      </section>
+
+      <section class="workspace" aria-label="Live point rendering and progress">
+        <div class="render-panel">
+          <div class="render-heading">
+            <div>
+              <p class="eyebrow">LIVE WEBGL VIEW</p>
+              <h2 id="render-title">Waiting for real EPT points</h2>
+            </div>
+            <div id="render-count" class="render-count">0 points</div>
+          </div>
+          <canvas id="point-canvas" aria-label="WebGL rendering of retrieved LiDAR points">
+            WebGL is required to display the benchmark point cloud.
+          </canvas>
+          <div class="legend">
+            <span><i class="swatch ground"></i>Class 2</span>
+            <span><i class="swatch vegetation"></i>Classes 3–5</span>
+            <span><i class="swatch building"></i>Class 6</span>
+            <span><i class="swatch other"></i>Other / unclassified</span>
+          </div>
+          <p class="render-caption">
+            Top-down diagnostic view. Points are WebGL buffers, not DOM elements.
+            Display sampling never alters the retained EPT point data.
+          </p>
+        </div>
+
+        <div class="progress-panel">
+          <p class="eyebrow">TEST STATUS</p>
+          <h2 id="status-title" role="status" aria-live="polite">Ready</h2>
+          <p id="status-detail">Enter an EPT URL and projected test-center coordinates to begin.</p>
+          <progress id="progress" value="0" max="1">0%</progress>
+          <div id="live-metrics" class="live-metrics"></div>
+          <ol id="event-log" class="event-log" aria-label="Benchmark event log"></ol>
+        </div>
+      </section>
+
+      <section class="results-panel" aria-labelledby="results-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">MEASUREMENTS</p>
+            <h2 id="results-title">Benchmark results</h2>
+          </div>
+          <button id="download" class="quiet-button" disabled>Download JSON report</button>
+        </div>
+        <p id="results-placeholder" class="muted">
+          Results appear here after the browser finishes retrieving and decoding
+          actual EPT nodes. A completed area means its intersecting nodes were
+          fetched, not merely discovered in metadata.
+        </p>
+        <div id="results-table-wrap" class="table-wrap"></div>
+        <details>
+          <summary>Raw measurement data</summary>
+          <pre id="raw-results">{}</pre>
+        </details>
+      </section>
+
+      <footer class="limitations">
+        <p>
+          This is a local-device benchmark, not a claim about all visitors. Browser
+          heap APIs omit some worker, WebAssembly and GPU memory. Requests go
+          directly from your browser to the EPT host. No location or source URL
+          is stored in this app or included in its benchmark report.
+        </p>
+      </footer>
+    </main>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

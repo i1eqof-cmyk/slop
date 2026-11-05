@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Explore public USGS 3DEP LiDAR point clouds in a browser."
+    />
+    <title>USGS 3DEP LiDAR Explorer</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">USGS 3DEP · BROWSER LIDAR EXPLORER</p>
+          <h1>Explore LiDAR anywhere</h1>
+          <p class="subhead">Search a place, draw a rectangle, and scan public point-cloud coverage.</p>
+        </div>
+        <a class="advanced-link" href="./advanced-benchmark.html">Advanced Benchmark</a>
+      </header>
+
+      <section class="map-shell" aria-label="Map-based LiDAR scanner">
+        <div class="map-toolbar">
+          <form id="search-form" class="location-search">
+            <label class="sr-only" for="location-search">Search for a place</label>
+            <input id="location-search" type="search" placeholder="Search a place or address" autocomplete="off" />
+            <button type="submit" class="secondary-button">Search</button>
+          </form>
+          <div class="map-actions">
+            <button id="clear-selection" class="secondary-button" disabled>Clear</button>
+            <button id="scan-area" class="primary-button" disabled>Scan Area</button>
+            <button id="cancel-scan" class="secondary-button" hidden>Cancel scan</button>
+          </div>
+        </div>
+        <div id="map" role="application" aria-label="Interactive map. Draw a rectangle to select an area."></div>
+      </section>
+
+      <section class="scan-status" aria-live="polite">
+        <div class="status-heading">
+          <div>
+            <p class="eyebrow">COVERAGE & SCAN</p>
+            <h2 id="status-title">Choose an area on the map</h2>
+          </div>
+          <span id="coverage-badge" class="coverage-badge">Not scanned</span>
+        </div>
+        <p id="status-detail">Use the rectangle tool, then select Scan Area. Each side may be up to 2,000 m; device-aware point limits prevent oversized downloads.</p>
+        <progress id="scan-progress" aria-label="LiDAR scan progress"></progress>
+      </section>
+
+      <section class="viewer-panel" aria-labelledby="viewer-title">
+        <div class="viewer-heading">
+          <div>
+            <p class="eyebrow">POINT-CLOUD VIEWER</p>
+            <h2 id="viewer-title">Waiting for real EPT points</h2>
+          </div>
+          <strong id="viewer-count">0 points</strong>
+        </div>
+        <canvas id="point-canvas" aria-label="WebGL view of downloaded LiDAR points">
+          WebGL is required to render the point cloud.
+        </canvas>
+        <div class="point-legend">
+          <span><i class="swatch ground"></i>Class 2 ground</span>
+          <span><i class="swatch vegetation"></i>Classes 3–5</span>
+          <span><i class="swatch building"></i>Class 6</span>
+          <span><i class="swatch other"></i>Other / unclassified</span>
+        </div>
+        <p class="caption">
+          Display sampling only limits rendered points. Retrieved LAZ attributes and in-box point data remain separate from the display sample.
+        </p>
+      </section>
+
+      <section class="candidate-panel" aria-labelledby="candidate-title">
+        <div class="candidate-heading">
+          <div>
+            <p class="eyebrow">POTENTIAL STRUCTURES</p>
+            <h2 id="candidate-title">No candidates yet</h2>
+          </div>
+          <p class="candidate-note">Heuristic evidence only; candidates are not confirmed buildings.</p>
+        </div>
+        <div id="candidate-summary" class="candidate-summary"></div>
+        <div id="candidate-list" class="candidate-list">
+          <p class="muted">Run a scan to see candidate structure evidence.</p>
+        </div>
+      </section>
+
+      <details id="owner-panel" class="owner-panel">
+        <summary>Owner review panel</summary>
+        <p class="owner-panel-note">
+          Every visitor's scan saves candidate markers to shared storage. Sign in with the configured owner Google account to remove or restore markers. Removed locations stay suppressed when a later scan finds them again.
+        </p>
+        <div class="owner-panel-actions">
+          <button id="owner-sign-in" class="secondary-button" type="button">Sign in with Google</button>
+          <button id="owner-sign-out" class="secondary-button" type="button" hidden>Sign out</button>
+          <span id="owner-account-status" role="status">Connecting to shared marker storage…</span>
+        </div>
+        <p id="owner-panel-status" class="owner-panel-status" role="status"></p>
+        <div id="removed-candidate-list" class="removed-candidate-list"></div>
+      </details>
+
+      <details class="diagnostics-panel">
+        <summary>Scan Diagnostics</summary>
+        <p class="diagnostics-note">
+          Measurements are generated automatically for each scan. The browser reports only memory exposed by its APIs. Z and ground-relative heights remain in LAS Z units until the vertical reference is verified.
+        </p>
+        <dl id="diagnostics-list" class="diagnostics-list">
+          <dt>Status</dt><dd>No scan run</dd>
+        </dl>
+      </details>
+
+      <footer class="privacy-note">
+        Map tiles, place searches, USGS catalog/coverage requests, and EPT data requests go to their public providers, which may log them. Candidate coordinates and evidence from every visitor's scan, plus removal status, are shared in Firebase; raw LiDAR points and full scan rectangles are not.
+        <a href="./advanced-benchmark.html">Open the manual benchmark</a>
+      </footer>
+    </main>
+    <script type="module" src="./src/scanner.js"></script>
+  </body>
+</html>
