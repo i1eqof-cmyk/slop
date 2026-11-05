@@ -1,0 +1,26 @@
+{
+  "name": "global-ept-browser-benchmark",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@firebase/app": "^0.16.5",
+    "@firebase/auth": "^1.13.9",
+    "@firebase/database": "^1.1.5",
+    "@turf/boolean-intersects": "^7.4.0",
+    "@turf/helpers": "^7.4.0",
+    "laz-perf": "0.0.7",
+    "leaflet": "^1.9.4",
+    "leaflet-draw": "^1.0.4",
+    "maplibre-gl": "^6.16.0",
+    "proj4": "^2.22.0"
+  },
+  "devDependencies": {
+    "vite": "^6.4.1"
+  }
+}
